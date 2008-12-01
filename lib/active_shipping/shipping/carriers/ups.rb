@@ -352,16 +352,12 @@ module ActiveMerchant
       end
       
       def commit(action, request, test = false)
-        http = Net::HTTP.new((test ? TEST_DOMAIN : LIVE_DOMAIN),
-                              (USE_SSL[action] ? 443 : 80 ))
-        http.use_ssl = USE_SSL[action]
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if USE_SSL[action]
-        response = http.start do |http|
-          http.post RESOURCES[action], request
-        end
-        response.body
+        http_post(url_for_action(action,test), request, USE_SSL[action])
       end
       
+      def url_for_action(action, test = false)
+        "http#{USE_SSL[action] ? 's':''}://#{(test ? TEST_DOMAIN : LIVE_DOMAIN)}:#{(USE_SSL[action] ? '443' : '80')}#{RESOURCES[action]}"
+      end
       
       def service_name_for(origin, code)
         origin = origin.country_code(:alpha2)

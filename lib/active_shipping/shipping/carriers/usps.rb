@@ -438,13 +438,11 @@ module ActiveMerchant
       end
       
       def commit(action, request, test = false)
-        http = Net::HTTP.new((test ? TEST_DOMAINS[USE_SSL[action]] : LIVE_DOMAIN),
-                              (USE_SSL[action] ? 443 : 80 ))
-        http.use_ssl = USE_SSL[action]
-        response = http.start do |http|
-          http.get "#{test ? TEST_RESOURCE : LIVE_RESOURCE}?API=#{API_CODES[action]}&XML=#{request}"
-        end
-        response.body
+        http_get(url_for_action(action,request,test), USE_SSL[action])
+      end
+      
+      def url_for_action(action, request, test = false)
+        "http#{USE_SSL[action] ? 's':''}://#{(test ? TEST_DOMAINS[USE_SSL[action]] : LIVE_DOMAIN)}:#{(USE_SSL[action] ? '443' : '80')}#{test ? TEST_RESOURCE : LIVE_RESOURCE}?API=#{API_CODES[action]}&XML=#{request}"
       end
       
       def strip_zip(zip)

@@ -6,6 +6,9 @@ module ActiveMerchant
       include PostsData
       include Quantified
       
+      self.retry_safe = true
+      self.ssl_strict = false
+      
       attr_reader :last_request
       attr_accessor :test_mode
       alias_method :test_mode?, :test_mode
