@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<VersionCaptureRequest xmlns="http://fedex.com/ws/registration/v2">
+  <WebAuthenticationDetail>
+    <CspCredential>
+      <Key>CSP KEY</Key>
+      <Password>CSP PWD</Password>
+    </CspCredential>
+    <UserCredential>
+      <Key>Generated USER KEY</Key>
+      <Password>Generated USER PWD</Password>
+    </UserCredential>
+  </WebAuthenticationDetail>
+  <ClientDetail>
+    <AccountNumber>000000000</AccountNumber>
+    <MeterNumber>Generated Meter Number</MeterNumber>
+    <ClientProductId>ABCD</ClientProductId>
+    <ClientProductVersion>1234</ClientProductVersion>
+    <Region>US or CA</Region>
+  </ClientDetail>
+  <TransactionDetail>
+    <CustomerTransactionId>Version Capture Request</CustomerTransactionId>
+  </TransactionDetail>
+  <Version>
+    <ServiceId>fcas</ServiceId>
+    <Major>2</Major>
+    <Intermediate>1</Intermediate>
+    <Minor>0</Minor>
+  </Version>
+  <OriginLocationId>VXYZ(FedEx Provided)</OriginLocationId>
+  <VendorProductPlatform>Windows OS</VendorProductPlatform>
+</VersionCaptureRequest>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<SubscriptionRequest xmlns="http://fedex.com/ws/registration/v2">
+  <WebAuthenticationDetail>
+    <CspCredential>
+      <Key>CSP KEY</Key>
+      <Password>CSP PWD</Password>
+    </CspCredential>
+    <UserCredential>
+      <Key>Generated USER KEY</Key>
+      <Password>Generated USER PWD</Password>
+    </UserCredential>
+  </WebAuthenticationDetail>
+  <ClientDetail>
+    <AccountNumber>000000000</AccountNumber>
+    <MeterNumber/>
+    <ClientProductId>ABCD</ClientProductId>
+    <ClientProductVersion>1234</ClientProductVersion>
+  </ClientDetail>
+  <TransactionDetail>
+    <CustomerTransactionId>Subscription Request</CustomerTransactionId>
+  </TransactionDetail>
+  <Version>
+    <ServiceId>fcas</ServiceId>
+    <Major>2</Major>
+    <Intermediate>1</Intermediate>
+    <Minor>0</Minor>
+  </Version>
+  <CspSolutionId>000 (FedEx Provided)</CspSolutionId>
+  <CspType>CERTIFIED_SOLUTION_PROVIDER</CspType>
+  <Subscriber>
+    <AccountNumber>000000000</AccountNumber>
+    <Contact>
+      <PersonName>Your Name</PersonName>
+      <CompanyName/>
+      <PhoneNumber>Your Phone #</PhoneNumber>
+      <FaxNumber/>
+      <EMailAddress>abc@xyz.com</EMailAddress>
+    </Contact>
+    <Address>
+      <StreetLines>Your Address Info</StreetLines>
+      <City> Your Address Info </City>
+      <StateOrProvinceCode> Your State Code </StateOrProvinceCode>
+      <PostalCode>Your Postal Code</PostalCode>
+      <CountryCode> Your Address Info </CountryCode>
+    </Address>
+  </Subscriber>
+  <AccountShippingAddress>
+    <StreetLines> Your Address Info </StreetLines>
+    <City> Your Address Info </City>
+    <StateOrProvinceCode> Your Address Info </StateOrProvinceCode>
+    <PostalCode>Your Address Info </PostalCode>
+    <CountryCode> Your Address Info </CountryCode>
+  </AccountShippingAddress>
+</SubscriptionRequest>

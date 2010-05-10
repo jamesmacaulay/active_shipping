@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<RegisterWebCspUserRequest xmlns="http://fedex.com/ws/registration/v2">
+  <WebAuthenticationDetail>
+    <CspCredential>
+      <Key>CSP KEY</Key>
+      <Password>CSP PWD</Password>
+    </CspCredential>
+  </WebAuthenticationDetail>
+  <ClientDetail>
+    <AccountNumber>000000000</AccountNumber>
+    <ClientProductId>ABCD</ClientProductId>
+    <ClientProductVersion>1234</ClientProductVersion>
+    <Region>US</Region>
+  </ClientDetail>
+  <TransactionDetail>
+    <CustomerTransactionId>Registration Request</CustomerTransactionId>
+  </TransactionDetail>
+  <Version>
+    <ServiceId>fcas</ServiceId>
+    <Major>2</Major>
+    <Intermediate>1</Intermediate>
+    <Minor>0</Minor>
+  </Version>
+  <Categories>SHIPPING</Categories>
+  <BillingAddress>
+    <StreetLines>Your Address Info</StreetLines>
+    <City>Your Address Info</City>
+    <StateOrProvinceCode>MO</StateOrProvinceCode>
+    <PostalCode>Your Address Info</PostalCode>
+    <CountryCode>Your Address Info</CountryCode>
+  </BillingAddress>
+  <UserContactAndAddress>
+    <Contact>
+      <PersonName>
+        <FirstName>Your F!st Name</FirstName>
+        <LastName>Your last name</LastName>
+      </PersonName>
+      <CompanyName>Your Company name</CompanyName>
+      <PhoneNumber>Your Phone #</PhoneNumber>
+      <EMailAddress>abc@xyz.com</EMailAddress>
+    </Contact>
+    <Address>
+      <StreetLines>Your Address Info</StreetLines>
+      <City>Your Address Info</City>
+      <StateOrProvinceCode>Your Address Info</StateOrProvinceCode>
+      <PostalCode>Your Address Info</PostalCode>
+      <CountryCode>Your Address Info</CountryCode>
+    </Address>
+  </UserContactAndAddress>
+</RegisterWebCspUserRequest>

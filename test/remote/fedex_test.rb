@@ -66,15 +66,17 @@ class FedExTest < Test::Unit::TestCase
   end
   
   def test_invalid_recipient_country
-    begin
-      response = @carrier.find_rates(
-                   @locations[:bare_beverly_hills],
-                   Location.new(:country => 'JP', :zip => '108-8361'),
-                   @packages.values_at(:wii)
-                 )
-    rescue ResponseError => e
-      assert_match /postal code/i, e.message
-      assert_match /(missing|invalid)/i, e.message
+    assert_raise ResponseError do
+      begin
+        response = @carrier.find_rates(
+                     @locations[:bare_beverly_hills],
+                     Location.new(:country => 'KP'),
+                     @packages.values_at(:wii)
+                   )
+      rescue ResponseError => e
+        assert_match /Destination country is not serviced/i, e.message
+        raise
+      end
     end
   end
   

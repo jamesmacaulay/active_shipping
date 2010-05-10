@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<VersionCaptureReply>
+  <HighestSeverity>SUCCESS</HighestSeverity>
+  <Notifications>
+    <Severity>SUCCESS</Severity>
+    <Source>wsi</Source>
+  </Notifications>
+  <TransactionDetail>
+    <CustomerTransactionId>Version Capture Request</CustomerTransactionId>
+  </TransactionDetail>
+  <Version>
+    <ServiceId>fcas</ServiceId>
+    <Major>2</Major>
+    <Intermediate>1</Intermediate>
+    <Minor>0</Minor>
+  </Version>
+</VersionCaptureReply>

@@ -14,7 +14,9 @@ module ActiveMerchant #:nodoc:
                   :address3,
                   :phone,
                   :fax,
-                  :address_type
+                  :address_type,
+                  :person_name,
+                  :company_name
       
       alias_method :zip, :postal_code
       alias_method :postal, :postal_code
@@ -41,6 +43,8 @@ module ActiveMerchant #:nodoc:
             raise ArgumentError.new("address_type must be one of #{ADDRESS_TYPES.map(&:inspect).join(', ')}")
           end
         end
+        @person_name = options[:person_name]
+        @company_name = options[:company_name]
       end
       
       def self.from(object, options={})
@@ -56,7 +60,9 @@ module ActiveMerchant #:nodoc:
           :address3 => [:address3],
           :phone => [:phone, :phone_number],
           :fax => [:fax, :fax_number],
-          :address_type => [:address_type]
+          :address_type => [:address_type],
+          :person_name => [:person_name],
+          :company_name => [:company_name]
         }
         attributes = {}
         hash_access = begin
@@ -91,7 +97,8 @@ module ActiveMerchant #:nodoc:
       
       def prettyprint
         chunks = []
-        chunks << [@name, @address1,@address2,@address3].reject {|e| e.blank?}.join("\n")
+        chunks << [@person_name, @company_name].reject {|e| e.blank?}.join("\n")
+        chunks << [@address1,@address2,@address3].reject {|e| e.blank?}.join("\n")
         chunks << [@city,@province,@postal_code].reject {|e| e.blank?}.join(', ')
         chunks << @country
         chunks.reject {|e| e.blank?}.join("\n")

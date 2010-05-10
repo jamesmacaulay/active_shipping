@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<v2:SubscriptionReply xmlns:v1="http://fedex.com/ws/registration/v1" xmlns:v2="http://fedex.com/ws/registration/v2">
+  <v2:HighestSeverity>SUCCESS</v2:HighestSeverity>
+  <v2:Notifications>
+    <v2:Severity>SUCCESS</v2:Severity>
+    <v2:Source>auto</v2:Source>
+    <v2:Code>0000</v2:Code>
+  </v2:Notifications>
+  <v2:Version xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <v2:ServiceId>fcas</v2:ServiceId>
+    <v2:Major>2</v2:Major>
+    <v2:Intermediate>1</v2:Intermediate>
+    <v2:Minor>0</v2:Minor>
+  </v2:Version>
+  <v2:MeterNumber>Generated Meter Number</v2:MeterNumber>
+</v2:SubscriptionReply>

@@ -8,6 +8,17 @@ fedex:
   login: FedExAccountNumber
   password: FedExMeterNumber
   test: true
+fedex_csp:
+  csp_key: CSPKey
+  csp_password: CSPPassword
+  account_number: AccountNumber
+  meter_number: MeterNumber
+  client_product_id: ProductId
+  client_product_version: ProductVersion
+  client_region: US
+  categories: SHIPPING
+  csp_solution_id: SolutionId # FedEx may accidentally tell you this is the Solution Type
+  
 shipwire:
   login: EmailAddress
   password: Password
