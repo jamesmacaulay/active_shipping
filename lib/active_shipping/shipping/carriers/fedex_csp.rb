@@ -10,10 +10,10 @@ module ActiveMerchant
     
     # :csp_key is a registered CSP provider's API key
     # :csp_password is a registered CSP provider's API password
-    # :account_number is a registered user's FedEx account number
-    # :meter_number is a registered user's meter number, acquired through a #subscribe call
-    # :user_key is a CSP user's key, acquired through a #register call
-    # :user_password is a CSP user's password, acquired through a #register call
+    # :account is a registered user's FedEx account number
+    # :login is a registered user's meter number, acquired through a #subscribe call
+    # :key is a CSP user's key, acquired through a #register call
+    # :password is a CSP user's password, acquired through a #register call
     #
     class FedExCSP < Carrier
       REGISTRATION_REQUEST_VERSION_CODE = ['fcas', 2, 1, 0]
@@ -28,8 +28,7 @@ module ActiveMerchant
       @@name = "FedEx"
       
       TEST_URL = 'https://gatewaybeta.fedex.com:443/xml'
-      #LIVE_URL = 'https://gateway.fedex.com:443/xml'
-      LIVE_URL = 'https://gateway.fedex.com/web-services'
+      LIVE_URL = 'https://gateway.fedex.com:443/xml'
       
       CarrierCodes = {
         "fedex_ground" => "FDXG",
@@ -97,6 +96,35 @@ module ActiveMerchant
         'express_reference' => 'EXPRESS_REFERENCE',
         'express_mps_master' => 'EXPRESS_MPS_MASTER'
       }
+      
+      WorldRegions = {"SE"=>"EMEA", "PG"=>"APAC", "LU"=>"EMEA", "VC"=>"LAC", "BD"=>"EMEA",
+        "GM"=>"EMEA", "PH"=>"APAC", "LV"=>"EMEA", "DO"=>"LAC", "EC"=>"LAC", "BE"=>"EMEA", "GN"=>"EMEA",
+        "MK"=>"EMEA", "VE"=>"LAC", "AR"=>"LAC", "SG"=>"APAC", "BF"=>"EMEA", "US"=>"US", "ML"=>"EMEA",
+        "AS"=>"APAC", "JM"=>"LAC", "GP"=>"LAC", "PK"=>"EMEA", "YE"=>"EMEA", "VG"=>"LAC", "EE"=>"EMEA",
+        "RU"=>"EMEA", "AT"=>"EMEA", "SI"=>"EMEA", "BG"=>"EMEA", "GQ"=>"EMEA", "PL"=>"EMEA", "NA"=>"EMEA",
+        "AU"=>"APAC", "JO"=>"EMEA", "BH"=>"EMEA", "GR"=>"EMEA", "MN"=>"APAC", "VI"=>"LAC", "EG"=>"EMEA",
+        "RW"=>"EMEA", "JP"=>"APAC", "SK"=>"EMEA", "BI"=>"EMEA", "QA"=>"EMEA", "MO"=>"APAC", "NC"=>"APAC",
+        "AW"=>"LAC", "BJ"=>"EMEA", "KE"=>"EMEA", "MP"=>"APAC", "GT"=>"LAC", "MQ"=>"LAC", "NE"=>"EMEA",
+        "SN"=>"EMEA", "BL"=>"LAC", "KG"=>"EMEA", "GU"=>"APAC", "UY"=>"LAC", "MR"=>"EMEA", "AZ"=>"EMEA",
+        "BM"=>"LAC", "KH"=>"APAC", "CA"=>"CA", "MS"=>"LAC", "VN"=>"APAC", "NG"=>"EMEA", "BN"=>"APAC",
+        "TC"=>"LAC", "UZ"=>"EMEA", "DZ"=>"EMEA", "MT"=>"EMEA", "BO"=>"LAC", "TD"=>"EMEA", "PR"=>"LAC",
+        "HK"=>"APAC", "MU"=>"EMEA", "NI"=>"LAC", "SR"=>"LAC", "GY"=>"LAC", "PS"=>"EMEA", "ZA"=>"EMEA",
+        "PT"=>"EMEA", "CD"=>"EMEA", "MV"=>"EMEA", "BR"=>"LAC", "TG"=>"EMEA", "HN"=>"LAC", "MW"=>"EMEA",
+        "NL"=>"EMEA", "WF"=>"APAC", "BS"=>"LAC", "TH"=>"APAC", "LA"=>"APAC", "MX"=>"LAC", "BT"=>"EMEA",
+        "KN"=>"LAC", "PW"=>"APAC", "CG"=>"EMEA", "LB"=>"EMEA", "MY"=>"APAC", "ID"=>"APAC", "ER"=>"EMEA",
+        "CH"=>"EMEA", "SV"=>"LAC", "LC"=>"LAC", "MZ"=>"EMEA", "VU"=>"APAC", "IE"=>"EMEA", "ES"=>"EMEA",
+        "PY"=>"LAC", "CI"=>"EMEA", "HR"=>"EMEA", "ET"=>"EMEA", "BW"=>"EMEA", "NO"=>"EMEA", "FI"=>"EMEA",
+        "SY"=>"EMEA", "CK"=>"APAC", "KR"=>"APAC", "NP"=>"EMEA", "TM"=>"EMEA", "HT"=>"LAC", "SZ"=>"EMEA",
+        "FJ"=>"APAC", "HU"=>"EMEA", "UA"=>"EMEA", "TN"=>"EMEA", "BY"=>"EMEA", "CL"=>"LAC", "CM"=>"EMEA",
+        "BZ"=>"LAC", "RE"=>"EMEA", "CN"=>"APAC", "LI"=>"EMEA", "GA"=>"EMEA", "FM"=>"APAC", "ZM"=>"EMEA",
+        "AD"=>"EMEA", "CO"=>"LAC", "TR"=>"EMEA", "GB"=>"EMEA", "AE"=>"EMEA", "LK"=>"EMEA", "KW"=>"EMEA",
+        "IL"=>"EMEA", "DE"=>"EMEA", "UG"=>"EMEA", "IN"=>"EMEA", "GD"=>"LAC", "CR"=>"LAC", "AG"=>"LAC",
+        "KY"=>"LAC", "GE"=>"EMEA", "MA"=>"EMEA", "KZ"=>"EMEA", "TT"=>"LAC", "OM"=>"EMEA", "FR"=>"EMEA",
+        "GF"=>"LAC", "AI"=>"LAC", "NZ"=>"APAC", "MC"=>"EMEA", "PA"=>"LAC", "CV"=>"EMEA", "TW"=>"APAC",
+        "MD"=>"EMEA", "DJ"=>"EMEA", "GH"=>"EMEA", "SA"=>"EMEA", "AL"=>"EMEA", "IS"=>"EMEA", "CW"=>"LAC",
+        "IT"=>"EMEA", "LR"=>"EMEA", "AM"=>"EMEA", "RO"=>"EMEA", "DK"=>"EMEA", "MF"=>"LAC", "VA"=>"EMEA",
+        "ZW"=>"EMEA", "MG"=>"EMEA", "TZ"=>"EMEA", "SC"=>"EMEA", "CY"=>"EMEA", "LS"=>"EMEA", "PE"=>"LAC",
+        "MH"=>"APAC", "LT"=>"EMEA", "PF"=>"APAC", "AO"=>"EMEA", "CZ"=>"EMEA", "DM"=>"LAC", "BB"=>"LAC"}
 
       def self.service_name_for_code(service_code)
         ServiceTypes[service_code] || begin
@@ -109,15 +137,16 @@ module ActiveMerchant
         [:csp_key, :csp_password]
       end
       
-      def user_credentials
-        {:account_number => @options[:account_number],
-         :meter_number => @options[:meter_number],
-         :user_key => @options[:user_key],
-         :user_password => @options[:user_password]}
-      end
-      
       def register_user(options = {})
+        region = options[:user_address] && WorldRegions[options[:user_address].country_code]
+        @options[:client_region] = region || 'US'
         options = @options.update(options)
+        requires!(options, :account)
+        requires!(options, :user_address)
+        requires!(options, :user_shipping_origin)
+        requires!(options, :user_first_name)
+        requires!(options, :user_last_name)
+        requires!(options, :user_email)
         
         register_user_request = build_registration_request
         response = commit(save_request(register_user_request), (options[:test] || false)).gsub(/<(\/)?.*?\:(.*?)>/, '<\1\2>')
@@ -146,7 +175,7 @@ module ActiveMerchant
       end
       
       def find_rates(origin, destination, packages, options = {})
-        options = @options.update(options)
+        options = @options.merge(options)
         packages = Array(packages)
         rate_request = build_rate_request(origin, destination, packages, options)
         response = commit(save_request(rate_request), (options[:test] || false)).gsub(/<(\/)?.*?\:(.*?)>/, '<\1\2>')
@@ -155,7 +184,7 @@ module ActiveMerchant
       end
       
       def find_tracking_info(tracking_number, options={})
-        options = @options.update(options)
+        options = @options.merge(options)
         
         tracking_request = build_tracking_request(tracking_number, options)
         response = commit(save_request(tracking_request), (options[:test] || false)).gsub(/<(\/)?.*?\:(.*?)>/, '<\1\2>')
@@ -166,6 +195,7 @@ module ActiveMerchant
       protected
       
       def build_registration_request
+        address, shipping_origin = @options[:user_address], @options[:user_shipping_origin]
         xml_request = XmlNode.new('RegisterWebCspUserRequest', 'xmlns' => 'http://fedex.com/ws/registration/v2') do |root_node|
           root_node << XmlNode.new('WebAuthenticationDetail') do |wad|
             wad << XmlNode.new('CspCredential') do |cc|
@@ -175,7 +205,7 @@ module ActiveMerchant
           end
           
           root_node << XmlNode.new('ClientDetail') do |cd|
-            cd << XmlNode.new('AccountNumber', @options[:account_number])
+            cd << XmlNode.new('AccountNumber', @options[:account])
             cd << XmlNode.new('ClientProductId', @options[:client_product_id])
             cd << XmlNode.new('ClientProductVersion', @options[:client_product_version])
             cd << XmlNode.new('Region', @options[:client_region])
@@ -187,14 +217,15 @@ module ActiveMerchant
           
           root_node << build_version_node(REGISTRATION_REQUEST_VERSION_CODE)
           
-          root_node << XmlNode.new('Categories', @options[:categories])
+          root_node << XmlNode.new('Categories', 'SHIPPING')
           
           root_node << XmlNode.new('BillingAddress') do |ba|
-            ba << XmlNode.new('StreetLines', @options[:billing_street_lines])
-            ba << XmlNode.new('City', @options[:billing_city])
-            ba << XmlNode.new('StateOrProvinceCode', @options[:billing_state_or_province_code])
-            ba << XmlNode.new('PostalCode', @options[:billing_postal_code])
-            ba << XmlNode.new('CountryCode', @options[:billing_country_code])
+            street_lines = [address.address1, address.address2, address.address3].compact.join(', ')
+            ba << XmlNode.new('StreetLines', street_lines)
+            ba << XmlNode.new('City', address.city)
+            ba << XmlNode.new('StateOrProvinceCode', address.province)
+            ba << XmlNode.new('PostalCode', address.postal_code)
+            ba << XmlNode.new('CountryCode', address.country_code)
           end
           
           root_node << XmlNode.new('UserContactAndAddress') do |uca|
@@ -204,17 +235,18 @@ module ActiveMerchant
                 pn << XmlNode.new('LastName', @options[:user_last_name])
               end
               
-              c << XmlNode.new('CompanyName', @options[:user_company_name])
-              c << XmlNode.new('PhoneNumber', @options[:user_phone_number])
+              c << XmlNode.new('CompanyName', address.company_name)
+              c << XmlNode.new('PhoneNumber', address.phone)
               c << XmlNode.new('EMailAddress', @options[:user_email])
             end
             
             uca << XmlNode.new('Address') do |a|
-              a << XmlNode.new('StreetLines', @options[:user_streetlines])
-              a << XmlNode.new('City', @options[:user_city])
-              a << XmlNode.new('StateOrProvinceCode', @options[:user_state_or_province_code])
-              a << XmlNode.new('PostalCode', @options[:user_postal_code])
-              a << XmlNode.new('CountryCode', @options[:user_country_code])
+              street_lines = [address.address1, address.address2, address.address3].compact.join(', ')
+              a << XmlNode.new('StreetLines', street_lines)
+              a << XmlNode.new('City', address.city)
+              a << XmlNode.new('StateOrProvinceCode', address.province)
+              a << XmlNode.new('PostalCode', address.postal_code)
+              a << XmlNode.new('CountryCode', address.country_code)
             end
           end
         end
@@ -223,6 +255,7 @@ module ActiveMerchant
       end
       
       def build_subscription_request
+        address, shipping_origin = @options[:user_address], @options[:user_shipping_origin]
         xml_request = XmlNode.new('SubscriptionRequest', 'xmlns' => 'http://fedex.com/ws/registration/v2') do |root_node|
           root_node << XmlNode.new('WebAuthenticationDetail') do |wad|
             wad << XmlNode.new('CspCredential') do |cc|
@@ -231,13 +264,13 @@ module ActiveMerchant
             end
             
             wad << XmlNode.new('UserCredential') do |uc|
-              uc << XmlNode.new('Key', @options[:user_key])
-              uc << XmlNode.new('Password', @options[:user_password])
+              uc << XmlNode.new('Key', @options[:key])
+              uc << XmlNode.new('Password', @options[:password])
             end
           end
           
           root_node << XmlNode.new('ClientDetail') do |cd|
-            cd << XmlNode.new('AccountNumber', @options[:account_number])
+            cd << XmlNode.new('AccountNumber', @options[:account])
             cd << XmlNode.new('MeterNumber')
             cd << XmlNode.new('ClientProductId', @options[:client_product_id])
             cd << XmlNode.new('ClientProductVersion', @options[:client_product_version])
@@ -253,31 +286,33 @@ module ActiveMerchant
           root_node << XmlNode.new('CspType', 'CERTIFIED_SOLUTION_PROVIDER')
           
           root_node << XmlNode.new('Subscriber') do |s|
-            s << XmlNode.new('AccountNumber', @options[:account_number])
+            s << XmlNode.new('AccountNumber', @options[:account])
             s << XmlNode.new('Contact') do |c|
               c << XmlNode.new('PersonName', @options[:user_first_name] + ' ' + @options[:user_last_name])
               
-              c << XmlNode.new('CompanyName', @options[:user_company_name])
-              c << XmlNode.new('PhoneNumber', @options[:user_phone_number])
-              c << XmlNode.new('FaxNumber', @options[:user_fax_number])
+              c << XmlNode.new('CompanyName', address.company_name)
+              c << XmlNode.new('PhoneNumber', address.phone)
+              c << XmlNode.new('FaxNumber', address.fax)
               c << XmlNode.new('EMailAddress', @options[:user_email])
             end
             
             s << XmlNode.new('Address') do |a|
-              a << XmlNode.new('StreetLines', @options[:user_streetlines])
-              a << XmlNode.new('City', @options[:user_city])
-              a << XmlNode.new('StateOrProvinceCode', @options[:user_state_or_province_code])
-              a << XmlNode.new('PostalCode', @options[:user_postal_code])
-              a << XmlNode.new('CountryCode', @options[:user_country_code])
+              street_lines = [address.address1, address.address2, address.address3].compact.join(', ')
+              a << XmlNode.new('StreetLines', street_lines)
+              a << XmlNode.new('City', address.city)
+              a << XmlNode.new('StateOrProvinceCode', address.province)
+              a << XmlNode.new('PostalCode', address.postal_code)
+              a << XmlNode.new('CountryCode', address.country_code)
             end
           end
           
           root_node << XmlNode.new('AccountShippingAddress') do |asa|
-            asa << XmlNode.new('StreetLines', @options[:billing_street_lines])
-            asa << XmlNode.new('City', @options[:billing_city])
-            asa << XmlNode.new('StateOrProvinceCode', @options[:billing_state_or_province_code])
-            asa << XmlNode.new('PostalCode', @options[:billing_postal_code])
-            asa << XmlNode.new('CountryCode', @options[:billing_country_code])
+            street_lines = [shipping_origin.address1, shipping_origin.address2, shipping_origin.address3].compact.join(', ')
+            asa << XmlNode.new('StreetLines', street_lines)
+            asa << XmlNode.new('City', shipping_origin.city)
+            asa << XmlNode.new('StateOrProvinceCode', shipping_origin.province)
+            asa << XmlNode.new('PostalCode', shipping_origin.postal_code)
+            asa << XmlNode.new('CountryCode', shipping_origin.country_code)
           end
         end
         
@@ -293,14 +328,14 @@ module ActiveMerchant
             end
             
             wad << XmlNode.new('UserCredential') do |uc|
-              uc << XmlNode.new('Key', @options[:user_key])
-              uc << XmlNode.new('Password', @options[:user_password])
+              uc << XmlNode.new('Key', @options[:key])
+              uc << XmlNode.new('Password', @options[:password])
             end
           end
           
           root_node << XmlNode.new('ClientDetail') do |cd|
-            cd << XmlNode.new('AccountNumber', @options[:account_number])
-            cd << XmlNode.new('MeterNumber', @options[:meter_number])
+            cd << XmlNode.new('AccountNumber', @options[:account])
+            cd << XmlNode.new('MeterNumber', @options[:login])
             cd << XmlNode.new('ClientProductId', @options[:client_product_id])
             cd << XmlNode.new('ClientProductVersion', @options[:client_product_version])
             cd << XmlNode.new('Region', @options[:client_region])
@@ -523,14 +558,14 @@ module ActiveMerchant
           end
           
           wad << XmlNode.new('UserCredential') do |uc|
-            uc << XmlNode.new('Key', @options[:user_key])
-            uc << XmlNode.new('Password', @options[:user_password])
+            uc << XmlNode.new('Key', @options[:key])
+            uc << XmlNode.new('Password', @options[:password])
           end
         end
         
         client_detail = XmlNode.new('ClientDetail') do |cd|
-          cd << XmlNode.new('AccountNumber', @options[:account_number])
-          cd << XmlNode.new('MeterNumber', @options[:meter_number])
+          cd << XmlNode.new('AccountNumber', @options[:account])
+          cd << XmlNode.new('MeterNumber', @options[:login])
           cd << XmlNode.new('ClientProductId', @options[:client_product_id])
           cd << XmlNode.new('ClientProductVersion', @options[:client_product_version])
         end
@@ -544,10 +579,10 @@ module ActiveMerchant
             
       def build_location_node(name, location, options = {})
         location_node = XmlNode.new(name) do |xml_node|
-          xml_node << XmlNode.new('AccountNumber', options[:account_number])
+          xml_node << XmlNode.new('AccountNumber', options[:account])
           
           xml_node << XmlNode.new('Contact') do |c|
-            c << XmlNode.new('PersonName', location.person_name)
+            c << XmlNode.new('PersonName', location.person_name || location.name)
             c << XmlNode.new('CompanyName', location.company_name)
             c << XmlNode.new('PhoneNumber', location.phone)
           end
@@ -687,8 +722,8 @@ module ActiveMerchant
                      :minor => version_details.get_text('Minor').to_s}
           
           credentials_details = root_node.elements['Credential']
-          @options[:user_key] = credentials_details.get_text('Key').to_s
-          @options[:user_password] = credentials_details.get_text('Password').to_s
+          @options[:key] = credentials_details.get_text('Key').to_s
+          @options[:password] = credentials_details.get_text('Password').to_s
         end
         
         RegistrationResponse.new(success, message, Hash.from_xml(response),
@@ -696,8 +731,8 @@ module ActiveMerchant
           :log_xml => options[:log_xml],
           :request => last_request,
           :test => options[:test],
-          :user_key => @options[:user_key],
-          :user_password => @options[:user_password],
+          :key => @options[:key],
+          :password => @options[:password],
           :version => version
         )
       end
@@ -716,7 +751,7 @@ module ActiveMerchant
                      :intermediate => version_details.get_text('Intermediate').to_s,
                      :minor => version_details.get_text('Minor').to_s}
           
-          @options[:meter_number] = root_node.get_text('MeterNumber').to_s
+          @options[:login] = root_node.get_text('MeterNumber').to_s
         end
         
         SubscriptionResponse.new(success, message, Hash.from_xml(response),
@@ -724,7 +759,7 @@ module ActiveMerchant
           :log_xml => options[:log_xml],
           :request => last_request,
           :test => options[:test],
-          :meter_number => @options[:meter_number]
+          :meter_number => @options[:login]
         )
       end
       

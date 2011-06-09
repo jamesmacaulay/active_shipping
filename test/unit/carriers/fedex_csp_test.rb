@@ -4,7 +4,22 @@ class FedExCSPTest < Test::Unit::TestCase
   def setup
     @packages               = TestFixtures.packages
     @locations              = TestFixtures.locations
-    @carrier                = FedExCSP.new(:csp_key => '1111', :csp_password => '2222', :account_number => '3333', :meter_number => '4444', :user_key => '5555', :user_password => '6666', :client_product_id => '7777', :client_product_version => '8888', :categories => 'SHIPPING')
+    @user_address           = Location.new  :phone => 'user_phone',
+                                            :fax => 'user_fax',
+                                            :address1 => 'user_street_lines',
+                                            :city => 'user_city',
+                                            :province => 'user_state_code',
+                                            :country => 'CA',
+                                            :postal_code => 'user_postal_code',
+                                            :company_name => 'user_company_name'
+    @shipping_origin        = Location.new  :phone => 'shipping_phone',
+                                            :fax => 'shipping_fax',
+                                            :address1 => 'shipping_street_lines',
+                                            :city => 'shipping_city',
+                                            :province => 'shipping_state_code',
+                                            :country => 'CA',
+                                            :postal_code => 'shipping_postal_code'
+    @carrier                = FedExCSP.new(:csp_key => '1111', :csp_password => '2222', :account => '3333', :login => '4444', :key => '5555', :password => '6666', :client_product_id => '7777', :client_product_version => '8888')
   end
   
   def test_initialize_options_requirements
@@ -15,14 +30,14 @@ class FedExCSPTest < Test::Unit::TestCase
   end
   
   def test_register_user_returns_a_registration_response
-    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :account_number => '000000000', :client_product_id => 'ABCD', :client_product_version => '1234', :categories => 'SHIPPING')
+    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :account => '000000000', :client_product_id => 'ABCD', :client_product_version => '1234')
     
     @carrier.expects(:commit).returns(xml_fixture('fedex_csp/registration_response'))
     assert_instance_of ActiveMerchant::Shipping::FedExCSP::RegistrationResponse, @carrier.register_user(registration_parameters)
   end
   
   def test_building_request_and_parsing_registration_response
-    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :client_product_id => 'ABCD', :client_product_version => '1234', :client_region => 'US', :categories => 'SHIPPING')
+    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :client_product_id => 'ABCD', :client_product_version => '1234', :client_region => 'US', :user_address => @user_address, :user_shipping_origin => @shipping_origin)
     
     expected_request = xml_fixture('fedex_csp/registration_request')
     mock_response = xml_fixture('fedex_csp/registration_response')
@@ -30,12 +45,12 @@ class FedExCSPTest < Test::Unit::TestCase
     @carrier.expects(:commit).with {|request, test_mode| Hash.from_xml(request) == Hash.from_xml(expected_request) && test_mode}.returns(mock_response)
     response = @carrier.register_user(registration_parameters.merge({:test => true}))
     
-    assert_equal 'Generated USER KEY', response.user_key
-    assert_equal 'Generated USER PWD', response.user_password
+    assert_equal 'Generated USER KEY', response.key
+    assert_equal 'Generated USER PWD', response.password
   end
   
   def test_building_and_parsing_subscription_response
-    @carrier = FedExCSP.new(:csp_solution_id => '000 (FedEx Provided)', :csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :user_key => 'Generated USER KEY', :user_password => 'Generated USER PWD', :user_first_name => 'Your', :user_last_name => 'Name', :user_phone_number => 'Your Phone #', :user_fax_number => '', :user_email => 'abc@xyz.com', :user_streetlines => 'Your Address Info', :user_city => ' Your Address Info ', :user_state_or_province_code => ' Your State Code ', :user_postal_code => 'Your Postal Code', :user_country_code => ' Your Address Info ', :billing_street_lines => ' Your Address Info ', :billing_city => ' Your Address Info ', :billing_state_or_province_code => ' Your Address Info ', :billing_postal_code => ' Your Address Info ', :billing_postal_code => 'Your Address Info ', :billing_country_code => ' Your Address Info ', :account_number => '000000000', :client_product_id => 'ABCD', :client_product_version => '1234', :categories => 'SHIPPING')
+    @carrier = FedExCSP.new(:csp_solution_id => '000 (FedEx Provided)', :csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :key => 'Generated USER KEY', :password => 'Generated USER PWD', :user_first_name => 'Your', :user_last_name => 'Name', :user_address => @user_address, :user_shipping_origin => @shipping_origin, :user_email => 'abc@xyz.com', :account => '00000000', :client_product_id => 'ABCD', :client_product_version => '1234')
     
     expected_request = xml_fixture('fedex_csp/subscription_request')
     mock_response = xml_fixture('fedex_csp/subscription_response')
@@ -49,7 +64,7 @@ class FedExCSPTest < Test::Unit::TestCase
   end
   
   def test_building_and_parsing_version_capture_response
-    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :user_key => 'Generated USER KEY', :user_password => 'Generated USER PWD', :account_number => '000000000', :meter_number => 'Generated Meter Number', :client_product_id => 'ABCD', :client_product_version => '1234', :client_region => 'US or CA', :origin_location_id => 'VXYZ(FedEx)', :vendor_product_platform => 'Windows OS')
+    @carrier = FedExCSP.new(:csp_key => 'CSP KEY', :csp_password => 'CSP PWD', :key => 'Generated USER KEY', :password => 'Generated USER PWD', :account => '000000000', :login => 'Generated Meter Number', :client_product_id => 'ABCD', :client_product_version => '1234', :client_region => 'US or CA', :origin_location_id => 'VXYZ(FedEx)', :vendor_product_platform => 'Windows OS')
     
     expected_request = xml_fixture('fedex_csp/version_capture_request')
     mock_response = xml_fixture('fedex_csp/version_capture_response')
@@ -168,6 +183,6 @@ class FedExCSPTest < Test::Unit::TestCase
   end
 
   def registration_parameters
-    {:account_number => '000000000', :client_region => 'US', :billing_street_lines => 'Your Address Info', :billing_city => 'Your Address Info', :billing_state_or_province_code => 'MO', :billing_postal_code => 'Your Address Info', :billing_country_code => 'Your Address Info', :user_first_name => 'Your F!st Name', :user_last_name => 'Your last name', :user_email => 'abc@xyz.com', :user_streetlines => 'Your Address Info', :user_city => 'Your Address Info', :user_state_or_province_code => 'Your Address Info', :user_postal_code => 'Your Address Info', :user_country_code => 'Your Address Info', :user_company_name => 'Your Company name', :user_phone_number => 'Your Phone #'}
+    {:account => '000000000', :client_region => 'US', :user_address => @user_address, :user_shipping_origin => @shipping_origin, :user_first_name => 'Your F!st Name', :user_last_name => 'Your last name', :user_email => 'abc@xyz.com'}
   end
 end

@@ -11,7 +11,7 @@
     </UserCredential>
   </WebAuthenticationDetail>
   <ClientDetail>
-    <AccountNumber>000000000</AccountNumber>
+    <AccountNumber>00000000</AccountNumber>
     <MeterNumber/>
     <ClientProductId>ABCD</ClientProductId>
     <ClientProductVersion>1234</ClientProductVersion>
@@ -28,27 +28,27 @@
   <CspSolutionId>000 (FedEx Provided)</CspSolutionId>
   <CspType>CERTIFIED_SOLUTION_PROVIDER</CspType>
   <Subscriber>
-    <AccountNumber>000000000</AccountNumber>
+    <AccountNumber>00000000</AccountNumber>
     <Contact>
       <PersonName>Your Name</PersonName>
-      <CompanyName/>
-      <PhoneNumber>Your Phone #</PhoneNumber>
-      <FaxNumber/>
+      <CompanyName>user_company_name</CompanyName>
+      <PhoneNumber>user_phone</PhoneNumber>
+      <FaxNumber>user_fax</FaxNumber>
       <EMailAddress>abc@xyz.com</EMailAddress>
     </Contact>
     <Address>
-      <StreetLines>Your Address Info</StreetLines>
-      <City> Your Address Info </City>
-      <StateOrProvinceCode> Your State Code </StateOrProvinceCode>
-      <PostalCode>Your Postal Code</PostalCode>
-      <CountryCode> Your Address Info </CountryCode>
+      <StreetLines>user_street_lines</StreetLines>
+      <City>user_city</City>
+      <StateOrProvinceCode>user_state_code</StateOrProvinceCode>
+      <PostalCode>user_postal_code</PostalCode>
+      <CountryCode>CA</CountryCode>
     </Address>
   </Subscriber>
   <AccountShippingAddress>
-    <StreetLines> Your Address Info </StreetLines>
-    <City> Your Address Info </City>
-    <StateOrProvinceCode> Your Address Info </StateOrProvinceCode>
-    <PostalCode>Your Address Info </PostalCode>
-    <CountryCode> Your Address Info </CountryCode>
+    <StreetLines>shipping_street_lines</StreetLines>
+    <City>shipping_city</City>
+    <StateOrProvinceCode>shipping_state_code</StateOrProvinceCode>
+    <PostalCode>shipping_postal_code</PostalCode>
+    <CountryCode>CA</CountryCode>
   </AccountShippingAddress>
 </SubscriptionRequest>

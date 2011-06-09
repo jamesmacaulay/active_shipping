@@ -23,11 +23,11 @@
   </Version>
   <Categories>SHIPPING</Categories>
   <BillingAddress>
-    <StreetLines>Your Address Info</StreetLines>
-    <City>Your Address Info</City>
-    <StateOrProvinceCode>MO</StateOrProvinceCode>
-    <PostalCode>Your Address Info</PostalCode>
-    <CountryCode>Your Address Info</CountryCode>
+    <StreetLines>user_street_lines</StreetLines>
+    <City>user_city</City>
+    <StateOrProvinceCode>user_state_code</StateOrProvinceCode>
+    <PostalCode>user_postal_code</PostalCode>
+    <CountryCode>CA</CountryCode>
   </BillingAddress>
   <UserContactAndAddress>
     <Contact>
@@ -35,16 +35,16 @@
         <FirstName>Your F!st Name</FirstName>
         <LastName>Your last name</LastName>
       </PersonName>
-      <CompanyName>Your Company name</CompanyName>
-      <PhoneNumber>Your Phone #</PhoneNumber>
+      <CompanyName>user_company_name</CompanyName>
+      <PhoneNumber>user_phone</PhoneNumber>
       <EMailAddress>abc@xyz.com</EMailAddress>
     </Contact>
     <Address>
-      <StreetLines>Your Address Info</StreetLines>
-      <City>Your Address Info</City>
-      <StateOrProvinceCode>Your Address Info</StateOrProvinceCode>
-      <PostalCode>Your Address Info</PostalCode>
-      <CountryCode>Your Address Info</CountryCode>
+      <StreetLines>user_street_lines</StreetLines>
+      <City>user_city</City>
+      <StateOrProvinceCode>user_state_code</StateOrProvinceCode>
+      <PostalCode>user_postal_code</PostalCode>
+      <CountryCode>CA</CountryCode>
     </Address>
   </UserContactAndAddress>
 </RegisterWebCspUserRequest>

@@ -15,17 +15,55 @@ class FedExCSPTest < Test::Unit::TestCase
       
       assert response.success?
       assert response.test?
-      assert_match(/^[a-zA-Z0-9]{16}$/, response.user_key)
-      assert_match(/^[a-zA-Z0-9]{25}$/, response.user_password)
+      assert_match(/^[a-zA-Z0-9]{16}$/, response.key)
+      assert_match(/^[a-zA-Z0-9]{25}$/, response.password)
     end
   end
   
   def register_canadian_user
-    @carrier.register_user(:account_number => '630103983', :client_region => 'CA', :billing_street_lines => '80 FedEx Prkwy', :billing_city => 'Toronto', :billing_state_or_province_code => 'ON', :billing_postal_code => 'L4W5K6', :billing_country_code => 'CA', :user_first_name => 'James', :user_last_name => 'MacAulay', :user_email => 'james@jadedpixel.com', :user_streetlines => '80 FedEx Prkwy', :user_city => 'Toronto', :user_state_or_province_code => 'ON', :user_postal_code => 'L4W5K6', :user_country_code => 'CA', :user_company_name => 'Shopify', :user_phone_number => '9012635448')
+    address = Location.new :country => 'CA',
+                                :province => 'ON',
+                                :city => 'Ottawa',
+                                :address1 => '80 FedEx Prkwy',
+                                :postal_code => 'K1R6A7',
+                                :phone => '9015551212',
+                                :company_name => 'Shopify'
+    shipping_origin = Location.new :country => 'CA',
+                                :province => 'ON',
+                                :city => 'Toronto',
+                                :address1 => '80 FedEx Prkwy',
+                                :postal_code => 'L4W5K6',
+                                :phone => '9012635448',
+                                :company_name => 'Shopify'
+    @carrier.register_user  :account => '630103983',
+                            :user_address => address,
+                            :user_shipping_origin => shipping_origin,
+                            :user_first_name => 'James',
+                            :user_last_name => 'MacAulay',
+                            :user_email => 'james@jadedpixel.com'
   end
   
   def register_us_user
-    @carrier.register_user(:account_number => '630054800', :client_region => 'US', :billing_street_lines => '80 FedEx Prkwy', :billing_city => 'AURORA', :billing_state_or_province_code => 'OH', :billing_postal_code => '44202', :billing_country_code => 'US', :user_first_name => 'James', :user_last_name => 'MacAulay', :user_email => 'james@jadedpixel.com', :user_streetlines => '80 FedEx Prkwy', :user_city => 'AURORA', :user_state_or_province_code => 'OH', :user_postal_code => '44202', :user_country_code => 'US', :user_company_name => 'Shopify', :user_phone_number => '9012635448')
+    address = Location.new :country => 'US',
+                                :province => 'OH',
+                                :city => 'AURORA BOREALIS',
+                                :address1 => '240 Fake St.',
+                                :postal_code => '44202',
+                                :phone => '9015551212',
+                                :company_name => 'Shopify'
+    shipping_origin = Location.new :country => 'US',
+                                :province => 'OH',
+                                :city => 'AURORA AUSTRALIS',
+                                :address1 => '80 FedEx Prkwy',
+                                :postal_code => '44202',
+                                :phone => '9012635448',
+                                :company_name => 'Shopify'
+    @carrier.register_user  :account => '630054800',
+                            :user_address => address,
+                            :user_shipping_origin => shipping_origin,
+                            :user_first_name => 'James',
+                            :user_last_name => 'MacAulay',
+                            :user_email => 'james@jadedpixel.com'
   end
   
   def register_user
