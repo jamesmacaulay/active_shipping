@@ -13,15 +13,7 @@ class LocationTest < Test::Unit::TestCase
   end
   
   def test_location_from_strange_hash
-    hash = {  :country => 'CA',
-              :zip => '90210',
-              :territory_code => 'QC', 
-              :town => 'Perth',
-              :address => '66 Gregory Ave.', 
-              :phone => '515-555-1212',
-              :fax_number => 'none to speak of',
-              :address_type => :commercial
-            }
+    hash = address_info
     location = Location.from(hash)
     
     assert_equal hash[:country], location.country_code(:alpha2)
@@ -52,5 +44,43 @@ class LocationTest < Test::Unit::TestCase
   def test_name_is_nil_if_not_provided
     location = Location.from({})
     assert_nil location.name
+  end
+  
+  def test_to_hash
+    expected = {
+      :address1=>"66 Gregory Ave.",
+      :city=>"Perth",
+      :province=>"QC",
+      :postal_code=>"90210",
+      :country=>"CA",
+      :address_type=>"commercial",
+      :phone=>"515-555-1212",
+      :fax=>"none to speak of",
+      :person_name=>nil,
+      :name=>nil,
+      :address2=>nil,
+      :address3=>nil,
+      :company_name=>nil
+    }
+    assert_equal Location.from(address_info).to_hash, expected
+  end
+  
+  def test_equality
+    assert_equal @locations[:ottawa], Location.from(@locations[:ottawa].to_hash)
+  end
+  
+  private
+  
+  def address_info
+    {
+      :country => 'CA',
+      :zip => '90210',
+      :territory_code => 'QC', 
+      :town => 'Perth',
+      :address => '66 Gregory Ave.', 
+      :phone => '515-555-1212',
+      :fax_number => 'none to speak of',
+      :address_type => :commercial
+    }
   end
 end

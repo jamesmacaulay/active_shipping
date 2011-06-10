@@ -95,6 +95,28 @@ module ActiveMerchant #:nodoc:
         prettyprint.gsub(/\n/, ' ')
       end
       
+      def to_hash
+        {
+          :country => country_code,
+          :postal_code => postal_code,
+          :province => province,
+          :city => city,
+          :name => name,
+          :address1 => address1,
+          :address2 => address2,
+          :address3 => address3,
+          :phone => phone,
+          :fax => fax,
+          :address_type => address_type,
+          :person_name => person_name,
+          :company_name => company_name
+        }
+      end
+      
+      def ==(other)
+        other.is_a?(Location) && to_hash == other.to_hash
+      end
+      
       def prettyprint
         chunks = []
         chunks << [@person_name, @company_name].reject {|e| e.blank?}.join("\n")
